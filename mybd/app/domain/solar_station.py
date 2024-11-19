@@ -16,6 +16,7 @@ class SolarStation(db.Model):
     batteries = db.relationship('Battery', backref='solar_station')
     households = db.relationship('Household', backref='solar_station')
     energy_sales = db.relationship('EnergySale', backref='solar_station')
+    users = db.relationship('User', secondary='users_has_solar_station', back_populates='user_station')
 
     def __repr__(self) -> str:
         return f"SolarStation({self.id}, name='{self.name}', household='{self.household}')"

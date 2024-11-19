@@ -9,7 +9,7 @@ from .battery_charge_dao import BatteryChargeDAO
 from .billing_account_dao import BillingAccountDAO
 from .user_has_solar_station_dao import UserHasSolarStationDAO
 
-# Ініціалізація DAO
+
 solar_station_dao = SolarStationDAO()
 panel_dao = PanelDAO()
 battery_dao = BatteryDAO()

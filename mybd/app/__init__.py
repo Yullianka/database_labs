@@ -23,7 +23,7 @@ def create_app():
     with app.app_context():
         create_database()  
         create_tables(app) 
-        print("Таблицы данных созданы или уже существуют.")
+        print("Таблиці даних створені.")
         populate_data()  
     
     return app
@@ -40,8 +40,7 @@ def create_database():
     connection.close()
 
 def create_tables(app):
-    with app.app_context(): 
-        # db.drop_all() 
+    with app.app_context():  
         db.create_all()
 
 def populate_data():
