@@ -8,6 +8,7 @@ from .tilt_ange_dao import TiltAngleDAO
 from .battery_charge_dao import BatteryChargeDAO
 from .billing_account_dao import BillingAccountDAO
 from .user_has_solar_station_dao import UserHasSolarStationDAO
+from .weather_conditions_dao import WeatherConditionDAO
 
 
 solar_station_dao = SolarStationDAO()
@@ -20,3 +21,4 @@ tilt_ange_dao = TiltAngleDAO()
 battery_charge_dao = BatteryChargeDAO()
 billing_account_dao = BillingAccountDAO()
 user_has_solar_station_dao = UserHasSolarStationDAO()
+weather_conditions_dao = WeatherConditionDAO()

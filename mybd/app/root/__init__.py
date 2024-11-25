@@ -16,6 +16,7 @@ def register_routes(app: Flask) -> None:
     from .tilt_angle_route import tilt_angle_bp
     from .user_route import user_bp
     from .user_has_solar_station_route import user_has_solar_station_bp
+    from .weather_conditions_route import weather_conditions_bp
 
     app.register_blueprint(solar_station_bp)
     app.register_blueprint(panel_bp)
@@ -27,3 +28,4 @@ def register_routes(app: Flask) -> None:
     app.register_blueprint(tilt_angle_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(user_has_solar_station_bp)
+    app.register_blueprint(weather_conditions_bp)

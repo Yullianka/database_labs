@@ -1,7 +1,7 @@
 from http import HTTPStatus
 from flask import Blueprint, jsonify, Response, request, make_response
 from ..controller import energy_sale_controller
-from ..domain.energy_sale import EnergySale
+from ..domain.energy_sale import EnergySale, insert_energy_sales
 
 energy_sale_bp = Blueprint('energy_sale', __name__, url_prefix='/energy_sale')
 
@@ -43,3 +43,13 @@ def patch_energy_sale(energy_sale_id: int) -> Response:
 def delete_energy_sale(energy_sale_id: int) -> Response:
     energy_sale_controller.delete(energy_sale_id)
     return make_response("EnergySale deleted", HTTPStatus.OK)
+
+@energy_sale_bp.route('/auto_insert', methods=['POST'])
+def auto_sales_create() -> Response | tuple[Response, int]:
+    num_sales = request.args.get('amount')
+    result = insert_energy_sales(int(num_sales))
+    if result != -1:
+        res = [sales.put_into_dto() for sales in result]
+        return jsonify({"new_energy_sale": res})
+    else:
+        return jsonify({"error"}), 400

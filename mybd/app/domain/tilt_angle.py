@@ -28,3 +28,6 @@ class TiltAngle(db.Model):
             tilt_angle=dto_dict.get('tilt_angle'),
             panel_id=dto_dict.get('panel_id')
         )
+
+
+

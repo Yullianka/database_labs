@@ -8,7 +8,7 @@ class Battery(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     station_id = db.Column(db.Integer)
-    capacity = db.Column(db.String(45))
+    capacity = db.Column(db.Integer, nullable=False)
     usage_duration = db.Column(db.String(45))
     solar_station_id = db.Column(db.Integer, db.ForeignKey('solar_station.id'))
 
@@ -36,3 +36,19 @@ class Battery(db.Model):
             usage_duration=dto_dict.get('usage_duration'),
             solar_station_id=dto_dict.get('solar_station_id'),
         )
+    
+def get_through_capacity(stat_type):
+    if stat_type == 'MAX':
+        result = db.session.query(db.func.max(Battery.capacity)).scalar()
+        return result
+    elif stat_type == 'MIN':
+        result = db.session.query(db.func.min(Battery.capacity)).scalar()
+        return result
+    elif stat_type == 'SUM':
+        result = db.session.query(db.func.sum(Battery.capacity)).scalar()
+        return result
+    elif stat_type == 'AVG':
+        result = db.session.query(db.func.avg(Battery.capacity)).scalar()
+        return result
+    else:
+        return -1

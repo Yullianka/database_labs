@@ -35,3 +35,6 @@ class BatteryCharge(db.Model):
             time=dto_dict.get('time'),
             battery_id=dto_dict.get('battery_id'),
         )
+
+
+

@@ -37,3 +37,24 @@ def patch_user_solar_station(user_has_solar_station_id: int) -> Response:
 def delete_user_solar_station(user_has_solar_station_id: int) -> Response:
     user_has_solar_station_controller.delete(user_has_solar_station_id)
     return make_response("User Solar Station association deleted", HTTPStatus.OK)
+
+@user_has_solar_station_bp.route('/new_link', methods=['POST'])
+def add_user_to_station():
+    data = request.get_json()
+
+    if not data:
+        return make_response("No JSON data provided", HTTPStatus.BAD_REQUEST)
+
+    user_name = data.get('user')
+    station_name = data.get('station')
+
+    if not user_name or not station_name:
+        return make_response("Both 'user' and 'station' must be provided", HTTPStatus.BAD_REQUEST)
+
+    try:
+        new_link = UserHasSolarStation.add_user_to_station(user_name, station_name)
+        return make_response(jsonify(new_link.put_into_dto()), HTTPStatus.CREATED)
+    except ValueError as e:
+        return make_response(str(e), HTTPStatus.BAD_REQUEST)
+
+

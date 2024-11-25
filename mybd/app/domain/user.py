@@ -37,3 +37,5 @@ class User(db.Model):
             amount_of_station=dto_dict.get('amount_of_station'),
             solar_station_id=dto_dict.get('solar_station_id'),
         )
+    
+

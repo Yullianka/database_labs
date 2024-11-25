@@ -43,3 +43,6 @@ def patch_tilt_angle(tilt_angle_id: int) -> Response:
 def delete_tilt_angle(tilt_angle_id: int) -> Response:
     tilt_angle_controller.delete(tilt_angle_id)
     return make_response("TiltAngle deleted", HTTPStatus.OK)
+
+
+

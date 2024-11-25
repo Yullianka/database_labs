@@ -1,7 +1,7 @@
 from http import HTTPStatus
 from flask import Blueprint, jsonify, Response, request, make_response
 from ..controller import battery_controller
-from ..domain.battery import Battery
+from ..domain.battery import Battery, get_through_capacity
 
 battery_bp = Blueprint('battery', __name__, url_prefix='/battery')
 
@@ -9,6 +9,15 @@ battery_bp = Blueprint('battery', __name__, url_prefix='/battery')
 @battery_bp.route('', methods=['GET'])
 def get_all_batteries() -> Response:
     return make_response(jsonify(battery_controller.find_all()), HTTPStatus.OK)
+
+@battery_bp.route('/capacity', methods=['GET'])
+def get_battey_via_capacitance() -> Response | tuple[Response, int]:
+    stat_type = request.args.get('stat_type').upper()
+    result = get_through_capacity(stat_type)
+    if result != -1:
+        return jsonify({stat_type: result})
+    else:
+        return jsonify({"error": "Invalid stat_type. Use MAX, MIN, SUM, or AVG"}), 400
 
 
 @battery_bp.route('', methods=['POST'])

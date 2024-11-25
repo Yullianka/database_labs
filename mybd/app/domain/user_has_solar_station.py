@@ -1,6 +1,8 @@
 from __future__ import annotations
 from typing import Dict, Any
 from app import db
+from .user import User
+from .solar_station import SolarStation
 
 
 class UserHasSolarStation(db.Model):
@@ -27,3 +29,18 @@ class UserHasSolarStation(db.Model):
             solar_station_id=dto_dict.get('solar_station_id'),
         )
         return user_has_solar_station
+    
+    @staticmethod
+    def add_user_to_station(user_name: str, station_name: str) -> UserHasSolarStation:
+        user = User.query.filter_by(name=user_name).first()
+        if not user:
+            raise ValueError("User not found")
+
+        station = SolarStation.query.filter_by(name=station_name).first()
+        if not station:
+            raise ValueError("Station not found")
+
+        user_has_station = UserHasSolarStation(users_id=user.id, solar_station_id=station.id)
+        db.session.add(user_has_station)
+        db.session.commit()
+        return user_has_station

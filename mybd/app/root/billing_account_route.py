@@ -1,9 +1,18 @@
 from http import HTTPStatus
 from flask import Blueprint, jsonify, Response, request, make_response
 from ..controller import billing_account_controller
-from ..domain.billing_account import BillingAccount
+from ..domain.billing_account import BillingAccount, insert_billing_account
 
 billing_account_bp = Blueprint('billing_account', __name__, url_prefix='/billing_account')
+
+@billing_account_bp.route('/parametrized', methods=['POST'])
+def insert_parametrized() -> Response:
+    content = request.get_json()
+    new_billing = insert_billing_account(
+        balance=content['balance'],
+        account_number=content['account_number']
+    )
+    return make_response(jsonify(new_billing.put_into_dto()), HTTPStatus.CREATED)
 
 
 @billing_account_bp.route('', methods=['GET'])

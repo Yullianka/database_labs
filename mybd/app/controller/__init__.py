@@ -8,6 +8,7 @@ from .energy_sale_controller import EnergySaleController
 from .tilt_angle_controller import TiltAngleController
 from .billing_account_controller import BillingAccountController
 from .user_has_solar_station_controller import UserHasSolarStationController
+from .weather_conditions_controller import WeatherConditionsController
 
 solar_station_controller = SolarStationController()
 panel_controller = PanelController()
@@ -19,3 +20,4 @@ energy_sale_controller = EnergySaleController()
 tilt_angle_controller = TiltAngleController()
 billing_account_controller = BillingAccountController()
 user_has_solar_station_controller = UserHasSolarStationController()
+weather_conditions_controller = WeatherConditionsController()

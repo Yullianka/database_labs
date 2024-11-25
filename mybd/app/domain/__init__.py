@@ -8,3 +8,4 @@ from .user_has_solar_station import UserHasSolarStation
 from .energy_sale import EnergySale
 from .tilt_angle import TiltAngle
 from .billing_account import BillingAccount
+from .weather_conditions import WeatherCondition

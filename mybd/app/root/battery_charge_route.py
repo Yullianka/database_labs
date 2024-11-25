@@ -1,4 +1,5 @@
 from http import HTTPStatus
+from typing import Tuple
 from flask import Blueprint, jsonify, Response, request, make_response
 from ..controller import battery_charge_controller
 from ..domain.battery_charge import BatteryCharge
@@ -22,6 +23,7 @@ def create_battery_charge() -> Response:
 @battery_charge_bp.route('/<int:battery_charge_id>', methods=['GET'])
 def get_battery_charge(battery_charge_id: int) -> Response:
     return make_response(jsonify(battery_charge_controller.find_by_id(battery_charge_id)), HTTPStatus.OK)
+
 
 
 @battery_charge_bp.route('/<int:battery_charge_id>', methods=['PUT'])

@@ -25,3 +25,10 @@ class BillingAccount(db.Model):
             balance=dto_dict.get('balance'),
             account_number=dto_dict.get('account_number')
         )
+
+
+def insert_billing_account(balance: str, account_number: str) -> BillingAccount:
+    new_billing = BillingAccount(balance=balance, account_number=account_number)
+    db.session.add(new_billing)
+    db.session.commit()
+    return new_billing

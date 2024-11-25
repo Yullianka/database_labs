@@ -36,3 +36,24 @@ class EnergySale(db.Model):
             energy_selected=dto_dict.get('energy_selected'),
             solar_station_id=dto_dict.get('solar_station_id'),
         )
+    
+def insert_energy_sales(n):
+    energy_sales = [
+        EnergySale(
+            timestamp=f"2024-11-{20 + i} 10:00:00",
+            energy_sold=f"{100 + i * 10} kWh",
+            price_per_kw=f"{0.15 + i * 0.01} USD",
+            energy_selected=f"{90 + i * 5} kWh",
+            solar_station_id=1  
+        )
+        for i in range(n)
+    ]
+
+    try:
+        db.session.bulk_save_objects(energy_sales)
+        db.session.commit()
+        return energy_sales
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error inserting energy sales: {e}")
+        return -1

@@ -2,7 +2,6 @@ from http import HTTPStatus
 from flask import Blueprint, jsonify, Response, request, make_response
 from ..controller import user_controller
 from ..domain.user import User
-
 user_bp = Blueprint('user', __name__, url_prefix='/user')
 
 @user_bp.route('', methods=['GET'])
@@ -37,3 +36,8 @@ def patch_user(user_id: int) -> Response:
 def delete_user(user_id: int) -> Response:
     user_controller.delete(user_id)
     return make_response("User deleted", HTTPStatus.OK)
+
+
+
+
+
