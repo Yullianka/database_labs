@@ -1,14 +1,10 @@
-
 import mysql.connector
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from app.config import Config
 from app.root import register_routes
 import os
-import sys
 from app.database import db
-
-print(sys.path)
 
 
 def create_app():
@@ -30,12 +26,13 @@ def create_app():
 
 def create_database():
     connection = mysql.connector.connect(
-        host='127.0.0.1',
-        user='root',
-        password='123456789',
+        host=Config.DB_HOST,
+        user=Config.DB_USER,
+        password=Config.DB_PASSWORD,
+        port=Config.DB_PORT,
     )
     cursor = connection.cursor()
-    cursor.execute("CREATE DATABASE IF NOT EXISTS new_solar")
+    cursor.execute(f"CREATE DATABASE IF NOT EXISTS {Config.DB_NAME}")
     cursor.close()
     connection.close()
 
@@ -47,10 +44,11 @@ def populate_data():
     sql_file_path = os.path.abspath('data.sql')
     if os.path.exists(sql_file_path):
         connection = mysql.connector.connect(
-            host='127.0.0.1',
-            user='root',
-            password='123456789',
-            database='new_solar'
+            host=Config.DB_HOST,
+            user=Config.DB_USER,
+            password=Config.DB_PASSWORD,
+            database=Config.DB_NAME,
+            port=Config.DB_PORT,
         )
         cursor = connection.cursor()
         with open(sql_file_path, 'r') as sql_file:
