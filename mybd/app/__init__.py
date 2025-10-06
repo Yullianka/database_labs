@@ -49,7 +49,7 @@ def create_tables(app):
         db.create_all()
 
 def populate_data():
-    sql_file_path = os.path.abspath('data.sql')
+    sql_file_path = os.path.abspath('data_mysql.sql')  # Використовуємо MySQL версію
     if os.path.exists(sql_file_path):
         connection = mysql.connector.connect(
             host=Config.DB_HOST,

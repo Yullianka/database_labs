@@ -1,5 +1,5 @@
 -- Таблиця billing_account (must be first - no dependencies)
-INSERT INTO billing_account (id, balance, account_number) VALUES
+INSERT IGNORE INTO billing_account (id, balance, account_number) VALUES
 (1, '120', 'BA001_NEW'),
 (2, '120', 'BA002_NEW'),
 (3, '120', 'BA003_NEW'),
@@ -9,13 +9,10 @@ INSERT INTO billing_account (id, balance, account_number) VALUES
 (7, '120', 'BA007_NEW'),
 (8, '120', 'BA008_NEW'),
 (9, '120', 'BA009_NEW'),
-(10, '120', 'BA010_NEW')
-ON CONFLICT (id) DO UPDATE SET 
-    balance = EXCLUDED.balance,
-    account_number = EXCLUDED.account_number;
+(10, '120', 'BA010_NEW');
 
 -- Таблиця solar_station (depends on billing_account)
-INSERT INTO solar_station (id, name, household, billing_account_id) 
+INSERT IGNORE INTO solar_station (id, name, household, billing_account_id) 
 VALUES 
 (1, 'Station A', 1, 1),
 (2, 'Station B', 2, 2),
@@ -26,14 +23,10 @@ VALUES
 (7, 'Station G', 7, 7),
 (8, 'Station H', 8, 8),
 (9, 'Station I', 9, 9),
-(10, 'Station J', 10, 10)
-ON CONFLICT (id) DO UPDATE SET 
-    name = EXCLUDED.name,
-    household = EXCLUDED.household,
-    billing_account_id = EXCLUDED.billing_account_id;
+(10, 'Station J', 10, 10);
 
 -- Таблиця users (depends on solar_station)
-INSERT INTO users (id, name, contact_info, amount_of_station, solar_station_id) 
+INSERT IGNORE INTO users (id, name, contact_info, amount_of_station, solar_station_id) 
 VALUES 
 (1, 'User 1', 'user1@example.com', 1, 1),
 (2, 'User 2', 'user2@example.com', 2, 2),
@@ -47,7 +40,7 @@ VALUES
 (10, 'User 10', 'user10@example.com', 4, 10);
 
 -- Таблиця households (depends on users and solar_station)
-INSERT INTO households (id, address, users_id, solar_station_id) 
+INSERT IGNORE INTO households (id, address, users_id, solar_station_id) 
 VALUES 
 (1, 'Address 1', 1, 1),
 (2, 'Address 2', 2, 1),
@@ -61,7 +54,7 @@ VALUES
 (10, 'Address 10', 10, 9);
 
 -- Таблиця users_has_solar_station (depends on users and solar_station)
-INSERT INTO users_has_solar_station (users_id, solar_station_id) 
+INSERT IGNORE INTO users_has_solar_station (users_id, solar_station_id) 
 VALUES 
 (1, 1),
 (2, 1),
@@ -75,7 +68,7 @@ VALUES
 (10, 9);
 
 -- Таблиця panel (depends on solar_station)
-INSERT INTO panel (id, type, power, installation_date, solar_station_id)
+INSERT IGNORE INTO panel (id, type, power, installation_date, solar_station_id)
 VALUES 
 (1, 'Type1', '200W', '2023-10-01', 1),
 (2, 'Type2', '300W', '2023-10-05', 2),
@@ -89,7 +82,7 @@ VALUES
 (10, 'Type10', '320W', '2023-10-30', 10);
 
 -- Таблиця battery (depends on solar_station)
-INSERT INTO battery (id, station_id, capacity, usage_duration, solar_station_id) 
+INSERT IGNORE INTO battery (id, station_id, capacity, usage_duration, solar_station_id) 
 VALUES 
 (1, 1, '1000Ah', '5 hours', 1),
 (2, 2, '1500Ah', '4 hours', 2),
@@ -103,7 +96,7 @@ VALUES
 (10, 10, '1550Ah', '7 hours', 10);
 
 -- Таблиця energy_sales (depends on solar_station)
-INSERT INTO energy_sales (id, timestamp, energy_sold, price_per_kw, energy_selected, solar_station_id)
+INSERT IGNORE INTO energy_sales (id, timestamp, energy_sold, price_per_kw, energy_selected, solar_station_id)
 VALUES
 (1, '2023-10-01 12:00:00', '100kWh', '0.12', '80kWh', 1),
 (2, '2023-10-01 12:30:00', '150kWh', '0.10', '100kWh', 2),
@@ -117,7 +110,7 @@ VALUES
 (10, '2023-10-01 16:30:00', '550kWh', '0.14', '170kWh', 10);
 
 -- Таблиця tilt_angles (depends on panel)
-INSERT INTO tilt_angles (id, timestamp, tilt_angle, panel_id) 
+INSERT IGNORE INTO tilt_angles (id, timestamp, tilt_angle, panel_id) 
 VALUES 
 (1, '2023-10-01 08:00:00', '30', 1),
 (2, '2023-10-01 09:00:00', '30', 1),
@@ -131,7 +124,7 @@ VALUES
 (10, '2023-10-01 08:00:00', '15', 4);
 
 -- Таблиця battery_charge (depends on battery)
-INSERT INTO battery_charge (id, timestamp, charge_level_per_hour, date, time, battery_id) 
+INSERT IGNORE INTO battery_charge (id, timestamp, charge_level_per_hour, date, time, battery_id) 
 VALUES 
 (1, '2023-10-01 08:00:00', '50%', '2023-10-01', '08:00', 1),
 (2, '2023-10-01 09:00:00', '60%', '2023-10-01', '09:00', 1),
