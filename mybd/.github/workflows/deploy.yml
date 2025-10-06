@@ -2,51 +2,48 @@ name: Deploy to AWS EC2
 
 on:
   push:
-    branches: [ lab4 ]  # Запускається при push в гілку lab4
+    branches: [lab4] # Запускається при push в гілку lab4
   pull_request:
-    branches: [ lab4 ]
+    branches: [lab4]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.8.0
-      with:
-        ssh-private-key: ${{ secrets.AWS_PRIVATE_KEY }}
-        
-    - name: Add server to known hosts
-      run: |
-        ssh-keyscan -H 54.198.153.234 >> ~/.ssh/known_hosts
-        
-    - name: Deploy to AWS EC2
-      run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@54.198.153.234 '
-          cd /home/ubuntu/database_labs &&
-          git pull origin lab4 &&
-          cd mybd &&
-          sudo docker-compose down &&
-          sudo docker-compose build --no-cache &&
-          sudo docker-compose up -d &&
-          echo "Deployment completed successfully!"
-        '
-        
-    - name: Health Check
-      run: |
-        echo "Waiting for application to start..."
-        sleep 30
-        
-        # Перевіряємо доступність головної сторінки
-        response=$(curl -s -o /dev/null -w "%{http_code}" http://54.198.153.234:5000/)
-        if [ $response -eq 200 ]; then
-          echo "✅ Application is running successfully!"
-          echo "🌐 Main page: http://54.198.153.234:5000/"
-          echo "📚 Swagger UI: http://54.198.153.234:5000/swagger/"
-        else
-          echo "❌ Health check failed with status code: $response"
-          exit 1
-        fi
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.AWS_PRIVATE_KEY }}
+
+      - name: Add server to known hosts
+        run: |
+          ssh-keyscan -H 54.198.153.234 >> ~/.ssh/known_hosts
+
+      - name: Deploy to AWS EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no admin@54.198.153.234 '
+            cd /home/admin/database_labs &&
+            git pull origin lab4 &&
+            cd mybd &&
+            sudo ./deploy.sh
+          '
+
+      - name: Health Check
+        run: |
+          echo "Waiting for application to start..."
+          sleep 30
+
+          # Перевіряємо доступність головної сторінки
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://54.198.153.234:5000/)
+          if [ $response -eq 200 ]; then
+            echo "✅ Application is running successfully!"
+            echo "🌐 Main page: http://54.198.153.234:5000/"
+            echo "📚 Swagger UI: http://54.198.153.234:5000/swagger/"
+          else
+            echo "❌ Health check failed with status code: $response"
+            exit 1
+          fi
