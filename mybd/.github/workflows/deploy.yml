@@ -37,7 +37,6 @@ jobs:
           echo "Waiting for application to start..."
           sleep 30
 
-          # Перевіряємо доступність головної сторінки
           response=$(curl -s -o /dev/null -w "%{http_code}" http://54.198.153.234:5000/)
           if [ $response -eq 200 ]; then
             echo "✅ Application is running successfully!"

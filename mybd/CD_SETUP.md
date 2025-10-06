@@ -8,7 +8,7 @@
 2. Settings → Secrets and variables → Actions
 3. Додайте новий секрет:
    - **Name:** `AWS_PRIVATE_KEY`
-   - **Value:** Вміст файлу `~/.ssh/database_labs.pem`
+   - **Value:** Вміст файлу `yuliana key.pem` з папки Downloads
 
 ### Як працює CD
 
@@ -27,7 +27,7 @@
 ./ci-deploy.sh
 
 # На сервері (якщо потрібно)
-cd /home/ubuntu/database_labs/mybd
+cd /home/admin/database_labs/mybd
 sudo ./deploy.sh
 ```
 
