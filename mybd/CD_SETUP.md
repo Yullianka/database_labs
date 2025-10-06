@@ -20,14 +20,16 @@
    - Restart додатку
    - Health check
 
-### Ручний Deployment
+### Ручний Deployment (якщо потрібно)
 
 ```bash
-# Локальний deployment через SSH
-./ci-deploy.sh
+# Підключення до сервера
+ssh -i ~/Downloads/"yuliana key.pem" admin@54.198.153.234
 
-# На сервері (якщо потрібно)
-cd /home/admin/database_labs/mybd
+# На сервері
+cd /home/admin/database_labs
+git pull origin main
+cd mybd
 sudo ./deploy.sh
 ```
 
