@@ -8,24 +8,6 @@ battery_charge_bp = Blueprint('battery_charge', __name__, url_prefix='/battery_c
 
 @battery_charge_bp.route('', methods=['GET'])
 def get_all_battery_charges() -> Response:
-    return make_response(jsonify(battery_charge_controller.find_all()), HTTPStatus.OK)
-
-
-@battery_charge_bp.route('', methods=['POST'])
-def create_battery_charge() -> Response:
-    content = request.get_json()
-    battery_charge = BatteryCharge.create_from_dto(content)
-    battery_charge_controller.create(battery_charge)
-    return make_response(jsonify(battery_charge.put_into_dto()), HTTPStatus.CREATED)
-
-
-@battery_charge_bp.route('/<int:battery_charge_id>', methods=['GET'])
-def get_battery_charge(battery_charge_id: int) -> Response:
-    return make_response(jsonify(battery_charge_controller.find_by_id(battery_charge_id)), HTTPStatus.OK)
-
-
-@battery_charge_bp.route('', methods=['GET'])
-def get_all_battery_charges() -> Response:
     """
     Get all battery charges
     ---
