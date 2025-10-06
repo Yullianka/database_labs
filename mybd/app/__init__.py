@@ -1,4 +1,4 @@
-import psycopg2
+import mysql.connector
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from app.config import Config
@@ -17,7 +17,7 @@ def create_app():
 
     
     with app.app_context():
-        create_database()  
+        # RDS база даних вже існує, тільки створюємо таблиці
         create_tables(app) 
         print("Таблиці даних створені.")
         populate_data()  
@@ -26,22 +26,22 @@ def create_app():
 
 def create_database():
     try:
-        connection = psycopg2.connect(
+        connection = mysql.connector.connect(
             host=Config.DB_HOST,
             user=Config.DB_USER,
             password=Config.DB_PASSWORD,
             port=Config.DB_PORT,
         )
-        connection.autocommit = True
         cursor = connection.cursor()
-        cursor.execute(f"CREATE DATABASE {Config.DB_NAME}")
+        cursor.execute(f"CREATE DATABASE IF NOT EXISTS {Config.DB_NAME}")
         cursor.close()
         connection.close()
         print(f"Database '{Config.DB_NAME}' created successfully.")
-    except psycopg2.errors.DuplicateDatabase:
-        print(f"Database '{Config.DB_NAME}' already exists.")
-    except Exception as e:
-        print(f"Error creating database: {e}")
+    except mysql.connector.Error as error:
+        if "database exists" in str(error).lower():
+            print(f"Database '{Config.DB_NAME}' already exists.")
+        else:
+            print(f"Error creating database: {error}")
 
 def create_tables(app):
     with app.app_context():  
@@ -50,7 +50,7 @@ def create_tables(app):
 def populate_data():
     sql_file_path = os.path.abspath('data.sql')
     if os.path.exists(sql_file_path):
-        connection = psycopg2.connect(
+        connection = mysql.connector.connect(
             host=Config.DB_HOST,
             user=Config.DB_USER,
             password=Config.DB_PASSWORD,
@@ -58,6 +58,17 @@ def populate_data():
             port=Config.DB_PORT,
         )
         cursor = connection.cursor()
+        
+        cursor.execute("SELECT COUNT(*) FROM billing_account")
+        count = cursor.fetchone()[0]
+        
+        if count > 0:
+            print("Дані вже існують в базі даних. Пропуск заповнення.")
+            cursor.close()
+            connection.close()
+            return
+        
+        print("Заповнення бази даних тестовими даними...")
         with open(sql_file_path, 'r') as sql_file:
             sql_text = sql_file.read()
             sql_statements = sql_text.split(';')
@@ -67,12 +78,12 @@ def populate_data():
                     try:
                         cursor.execute(statement)
                         connection.commit()
-                    except psycopg2.Error as error:
+                    except mysql.connector.Error as error:
                         print(f"Error executing SQL statement: {error}")
                         print(f"SQL statement: {statement}")
                         connection.rollback()
+        print("Тестові дані успішно додані до бази даних.")
         cursor.close()
         connection.close()
 
-# Create the app instance for Gunicorn
 app = create_app()

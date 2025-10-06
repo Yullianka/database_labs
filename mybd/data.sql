@@ -9,7 +9,10 @@ INSERT INTO billing_account (id, balance, account_number) VALUES
 (7, '120', 'BA007_NEW'),
 (8, '120', 'BA008_NEW'),
 (9, '120', 'BA009_NEW'),
-(10, '120', 'BA010_NEW');
+(10, '120', 'BA010_NEW')
+ON CONFLICT (id) DO UPDATE SET 
+    balance = EXCLUDED.balance,
+    account_number = EXCLUDED.account_number;
 
 -- Таблиця solar_station (depends on billing_account)
 INSERT INTO solar_station (id, name, household, billing_account_id) 
@@ -23,7 +26,11 @@ VALUES
 (7, 'Station G', 7, 7),
 (8, 'Station H', 8, 8),
 (9, 'Station I', 9, 9),
-(10, 'Station J', 10, 10);
+(10, 'Station J', 10, 10)
+ON CONFLICT (id) DO UPDATE SET 
+    name = EXCLUDED.name,
+    household = EXCLUDED.household,
+    billing_account_id = EXCLUDED.billing_account_id;
 
 -- Таблиця users (depends on solar_station)
 INSERT INTO users (id, name, contact_info, amount_of_station, solar_station_id) 
