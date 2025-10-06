@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  # Flask Application (MySQL на AWS RDS)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: solar_app
+    restart: always
+    environment:
+      DB_HOST: ${RDS_ENDPOINT}
+      DB_USER: ${DB_USER:-admin}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME:-new_solar}
+      DB_PORT: 3306
+      SECRET_KEY: ${SECRET_KEY:-change-this-secret-key-in-production}
+      FLASK_DEBUG: "false"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data.sql:/app/data.sql:ro
