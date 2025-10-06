@@ -15,9 +15,9 @@ NC='\033[0m' # No Color
 
 # Configuration
 SERVER_IP="54.198.153.234"
-SERVER_USER="ubuntu"
-APP_PATH="/home/ubuntu/database_labs"
-SSH_KEY_PATH="~/.ssh/database_labs.pem"
+SERVER_USER="admin"
+APP_PATH="/home/admin/database_labs"
+SSH_KEY_PATH="~/Downloads/yuliana key.pem"
 
 echo -e "${YELLOW}📡 Connecting to server $SERVER_IP...${NC}"
 
@@ -26,7 +26,7 @@ ssh -i $SSH_KEY_PATH $SERVER_USER@$SERVER_IP << 'EOF'
 set -e
 
 echo "📂 Navigating to application directory..."
-cd /home/ubuntu/database_labs
+cd /home/admin/database_labs
 
 echo "⬇️  Pulling latest changes from GitHub..."
 git pull origin lab4
