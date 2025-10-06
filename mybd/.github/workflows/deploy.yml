@@ -2,7 +2,7 @@ name: Deploy to AWS EC2
 
 on:
   push:
-    branches: [lab4] # Запускається при push в гілку lab4
+    branches: [lab4] 
   pull_request:
     branches: [lab4]
 
