@@ -27,7 +27,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no admin@54.198.153.234 '
             cd /home/admin/database_labs &&
-            git pull origin ${{ github.ref_name }} &&
+            git pull origin main &&
             cd mybd &&
             sudo ./deploy.sh
           '
