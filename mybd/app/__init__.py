@@ -10,14 +10,15 @@ from app.database import db
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    db.init_app(app)  
-
     
     register_routes(app)
 
+    create_database()
+    print("База даних створена.")
+    
+    db.init_app(app)
     
     with app.app_context():
-        # RDS база даних вже існує, тільки створюємо таблиці
         create_tables(app) 
         print("Таблиці даних створені.")
         populate_data()  
