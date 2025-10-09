@@ -20,3 +20,5 @@ tilt_ange_dao = TiltAngleDAO()
 battery_charge_dao = BatteryChargeDAO()
 billing_account_dao = BillingAccountDAO()
 user_has_solar_station_dao = UserHasSolarStationDAO()
+
+# Compare this snippet from mybd/app/root/panel_route.py:
