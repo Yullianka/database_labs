@@ -12,8 +12,8 @@ REST API для системи управління сонячною енерг�
 
 ## 🚀 Live Demo
 
-- **Application:** http://54.198.153.234:5000/
-- **Swagger Documentation:** http://54.198.153.234:5000/swagger/
+- **Application:** http://98.88.76.225:5000/
+- **Swagger Documentation:** http://98.88.76.225:5000/swagger/
 
 ## 📁 Project Structure
 
