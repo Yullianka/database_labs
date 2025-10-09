@@ -57,7 +57,7 @@ jobs:
       - name: Health Check
         run: |
           sleep 10
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://98.88.76.225/:5000/)
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://98.88.76.225:5000/)
           if [ $response -eq 200 ]; then
             echo "✅ Application is running successfully!"
             echo "🌐 Main page: http://98.88.76.225:5000/"
